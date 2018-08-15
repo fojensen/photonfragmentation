@@ -32,7 +32,7 @@ void madMinPhotonDeltaR()
    chain_GJets0p4->Add(dir + "tree_GJets_DR-0p4_HT-600toInf.root");
  
    //TH1D * hist = new TH1D("hist", ";min #DeltaR (#gamma, hard partons);events / 0.1", 40, 0., 4.); const double max = 8000.; const TString savetag = "widerange";
-   TH1D * hist = new TH1D("hist", ";min #DeltaR (#gamma, hard partons);events / 0.05", 16, 0., 0.8); const double max = 2500.; const TString savetag = "narrowrange";
+   TH1D * hist = new TH1D("hist", ";min #DeltaR (#gamma, hard partons);events / 0.05", 16, 0., 0.8); const double max = 2000.; const TString savetag = "narrowrange";
    hist->SetLineWidth(2);
 
    TH1D * dr_GJets = (TH1D*)hist->Clone("dr_GJets");

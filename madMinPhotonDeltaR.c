@@ -31,8 +31,10 @@ void madMinPhotonDeltaR()
    chain_GJets0p4->Add(dir + "tree_GJets_DR-0p4_HT-400to600.root");
    chain_GJets0p4->Add(dir + "tree_GJets_DR-0p4_HT-600toInf.root");
  
-   TH1D * hist = new TH1D("hist", ";min #DeltaR (#gamma, hard partons);events / 0.1", 40, 0., 4.);
+   //TH1D * hist = new TH1D("hist", ";min #DeltaR (#gamma, hard partons);events / 0.1", 40, 0., 4.); const double max = 8000.; const TString savetag = "widerange";
+   TH1D * hist = new TH1D("hist", ";min #DeltaR (#gamma, hard partons);events / 0.05", 16, 0., 0.8); const double max = 2500.; const TString savetag = "narrowrange";
    hist->SetLineWidth(2);
+
    TH1D * dr_GJets = (TH1D*)hist->Clone("dr_GJets");
    TH1D * dr_GJets0p4 = (TH1D*)hist->Clone("dr_GJets0p4");
    TH1D * dr_QCD = (TH1D*)hist->Clone("dr_QCD");
@@ -64,7 +66,7 @@ void madMinPhotonDeltaR()
 
    dr_GJets->Draw("HIST, E");
    dr_GJets->SetMinimum(0.);
-   dr_GJets->SetMaximum(8000.);
+   dr_GJets->SetMaximum(max);
    dr_GJets->SetStats(0);
    dr_GJets0p4->Draw("HIST, E, SAME");
    dr_QCD->Draw("HIST, E, SAME");
@@ -79,6 +81,6 @@ void madMinPhotonDeltaR()
 
    labelCMS();
 
-   c->SaveAs("./plots/madMinPhotonDeltaR.pdf");
+   c->SaveAs("./plots/madMinPhotonDeltaR."+savetag+".pdf");
 }
 

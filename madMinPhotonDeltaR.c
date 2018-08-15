@@ -1,10 +1,10 @@
-#include <iostream>
 #include "labelCMS.h"
 #include <TChain.h>
 #include <TCanvas.h>
 #include <TLegend.h>
 #include <TH1D.h>
 #include <TCut.h>
+#include <iostream>
 
 void madMinPhotonDeltaR()
 {

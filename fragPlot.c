@@ -21,7 +21,8 @@ void drawLines46(const double min, const double max)
 
 void fragPlot()
 {
-   TFile * f = TFile::Open("fragmentation.0p4.GJetsHT.root");
+   TFile * f = TFile::Open("fragmentation.hdp.sp0p4.root");
+   //TFile * f = TFile::Open("fragmentation.ldp.sp0p4.root");
 
    TCanvas * c1 = new TCanvas("c1", "", 600., 400.); 
    TGraphAsymmErrors * g_bin46_NJets789 = (TGraphAsymmErrors*)f->Get("bin46_NJets789");

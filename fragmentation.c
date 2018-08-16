@@ -34,27 +34,6 @@ class fragmentation
 
 void fragmentation::initChain(TChain * chain)
 {
-   chain->SetBranchStatus("*", 0);
-   chain->SetBranchStatus("HT", 1);
-   chain->SetBranchStatus("MHT", 1);
-   chain->SetBranchStatus("NJets", 1);
-   chain->SetBranchStatus("BTags", 1);
-   chain->SetBranchStatus("isoElectronTracks", 1);
-   chain->SetBranchStatus("isoMuonTracks", 1);
-   chain->SetBranchStatus("isoPionTracks", 1);
-   chain->SetBranchStatus("DeltaPhi1", 1);
-   chain->SetBranchStatus("DeltaPhi2", 1);
-   chain->SetBranchStatus("DeltaPhi3", 1);
-   chain->SetBranchStatus("DeltaPhi4", 1);
-   chain->SetBranchStatus("Weight", 1);
-   chain->SetBranchStatus("JetID", 1);
-   chain->SetBranchStatus("madMinPhotonDeltaR", 1);
-   chain->SetBranchStatus("madMinDeltaRStatus", 1);
-   chain->SetBranchStatus("Electrons", 1);
-   chain->SetBranchStatus("Muons", 1);
-   chain->SetBranchStatus("Photons", 1);
-   chain->SetBranchStatus("Photons_fullID", 1);
-   
    chain->SetBranchAddress("HT", &HT);
    chain->SetBranchAddress("MHT", &MHT);
    chain->SetBranchAddress("NJets", &NJets);
@@ -74,9 +53,7 @@ void fragmentation::initChain(TChain * chain)
    chain->SetBranchAddress("Muons", &Muons);
    chain->SetBranchAddress("Photons", &Photons);
    chain->SetBranchAddress("Photons_fullID", &Photons_fullID);
-   Electrons = 0;
-   Muons = 0;
-   Photons = 0;
+   Electrons = Muons = Photons = 0;
    Photons_fullID = 0;
 }
 
@@ -107,10 +84,10 @@ void fragmentation::fillHists(TChain * chain, const int hid, const double sp)
          if (madMinDeltaRStatus!=1) continue;
          if (madMinPhotonDeltaR>=sp) continue;
       }
-      if (hid==1 && madMinPhotonDeltaR<0.4) continue;
+      if (hid==1 && madMinPhotonDeltaR<0.4) continue; // hard cutoff set by MC production
       if (hid==2 && madMinPhotonDeltaR<sp) continue;
   
-      Weight = Weight *  35862.824;
+      Weight = Weight * 35862.824;
  
       h_bin65[hid]->Fill(whichBin_65(NJets, HT, MHT), Weight);
       h_MHT[hid]->Fill(MHT, Weight);
@@ -140,7 +117,7 @@ TGraphAsymmErrors * divideHists(TH1D * hist[3], const TString name)
    TGraphAsymmErrors * graph = new TGraphAsymmErrors(num, denom, "n");
    graph->SetName(name);
    char buffer[1000];
-   sprintf(buffer, ";%s;direct photon fraction", hist[0]->GetXaxis()->GetTitle());
+   sprintf(buffer, ";%s;fragmentation fraction", hist[0]->GetXaxis()->GetTitle());
    graph->SetTitle(buffer);
    return graph;
 }
@@ -153,27 +130,28 @@ void fragmentation::run()
    //const TString dir = "/eos/uscms/store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV12/tree_GJetLDP_CleanVars/";
    //const TString dirTag = "ldp";
 
-   const double sp = 0.4;
-   const TString spTag = "0p4";
+   //const double sp = 0.3; const TString spTag = "sp0p3";
+   const double sp = 0.4; const TString spTag = "sp0p4";
+   //const double sp = 0.5; const TString spTag = "sp0p5";
 
-   TChain * chainQCD = new TChain("tree");
-   chainQCD->Add(dir + "tree_QCD_HT-200to300.root");
-   chainQCD->Add(dir + "tree_QCD_HT-300to500.root");
-   chainQCD->Add(dir + "tree_QCD_HT-500to700.root");
-   chainQCD->Add(dir + "tree_QCD_HT-700to1000.root");
-   chainQCD->Add(dir + "tree_QCD_HT-1000to1500.root");
-   chainQCD->Add(dir + "tree_QCD_HT-1500to2000.root");
-   chainQCD->Add(dir + "tree_QCD_HT-2000toInf.root");
-   initChain(chainQCD);
+   TChain * cQCD = new TChain("tree");
+   cQCD->Add(dir + "tree_QCD_HT-200to300.root");
+   cQCD->Add(dir + "tree_QCD_HT-300to500.root");
+   cQCD->Add(dir + "tree_QCD_HT-500to700.root");
+   cQCD->Add(dir + "tree_QCD_HT-700to1000.root");
+   cQCD->Add(dir + "tree_QCD_HT-1000to1500.root");
+   cQCD->Add(dir + "tree_QCD_HT-1500to2000.root");
+   cQCD->Add(dir + "tree_QCD_HT-2000toInf.root");
+   initChain(cQCD);
 
-   TChain * chainGJets = new TChain("tree");
-   chainGJets->Add(dir + "tree_GJets_HT-100to200.root");
-   chainGJets->Add(dir + "tree_GJets_HT-200to400.root");
-   chainGJets->Add(dir + "tree_GJets_HT-400to600.root");
-   chainGJets->Add(dir + "tree_GJets_HT-600toInf.root");
-   initChain(chainGJets);
+   TChain * cGJets = new TChain("tree");
+   cGJets->Add(dir + "tree_GJets_HT-100to200.root");
+   cGJets->Add(dir + "tree_GJets_HT-200to400.root");
+   cGJets->Add(dir + "tree_GJets_HT-400to600.root");
+   cGJets->Add(dir + "tree_GJets_HT-600toInf.root");
+   initChain(cGJets);
     
-   TString l[3] = {"QCD_0s", "GJets_s0p4", "GJets_sInf"};
+   TString l[3] = {"QCD_0tosp", "GJets_spto0p4", "GJets_gtsp"};
    for (int i = 0; i < 3; ++i) {
       h_inc[i] = new TH1D("h_inc_"+l[i], ";the unit bin;events", 1, 0.5, 1.5);
       h_HT[i] = new TH1D("h_HT_"+l[i], ";HT [GeV];events / 100 GeV", 10, 300., 1300.);
@@ -185,9 +163,12 @@ void fragmentation::run()
       h_bin65_NJets789[i] = new TH1D("h_bin65_NJets789_"+l[i], ";65-bin NJets-HT-MHT analysis plane;events / bin", 65, 0.5, 65.5);
    }
 
-   fillHists(chainQCD, 0, sp);
-   fillHists(chainGJets, 1, sp);
-   fillHists(chainGJets, 2, sp);
+   std::cout << "filling QCD hists..." << std::endl;
+   fillHists(cQCD, 0, sp); // values less than sp
+   std::cout << "filling GJets hists..." << std::endl;
+   fillHists(cGJets, 1, sp); // values greater than 0p4
+   std::cout << "filling GJets hists..." << std::endl;
+   fillHists(cGJets, 2, sp); // values greater than sp
   
    TH1D *h_bin46[3], *h_bin59[3];
    TH1D *h_bin46_NJets789[3], *h_bin59_NJets789[3];

@@ -29,9 +29,13 @@ This uses the GJets and QCD MC samples to calculate the fraction. GJets_0p4 is u
 
 *Step 2:*
 Make the root file containing the fragmentation histograms:
+
 `root fragmentation.c+
+
 fragmentation f
+
 f.run()`
+
 
 This code is able to calculate the fraction the low-deltaphi estimate as well (the lines are all there, just comment/uncomment appropriately.
 

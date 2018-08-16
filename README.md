@@ -40,15 +40,24 @@ Make the root file containing the fragmentation histograms:
 
 `f.run()`
 
-This code is able to calculate the fraction the low-deltaphi estimate as well (the lines are all there, just comment/uncomment appropriately.
+This code is able to calculate the fraction the low-deltaphi estimate as well (the lines are all there, just comment/uncomment appropriately. Three files were made for three different stitch points of 0.2, 0.3, 0.4, to be used for systematic errors, comment the appropriate lines out to do each sp file in turn...
 
 
 ### Step 3:
 
 Plot the fraction for all the analysis bins:
 
-`fragPlot.c+`
+`root fragPlot.c+`
 
 This produces Figure 35 of AN-2016/350. It also produces some _usual suspects_...
 
+
 ### Step 4:
+
+For a systematic error, see how the fraction changes when using a stitch point of 0.2 or 0.3:
+
+`root dfover1mf.c+`
+
+If you want a simpler value to assign for the systematic error, and not bin by bin, we can look at the scatter of the central value of the differences (i.e. ignoring the statistical error seen in the plot):
+
+`root scatter.c+`

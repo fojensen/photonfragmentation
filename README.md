@@ -15,9 +15,11 @@ https://github.com/TreeMaker/TreeMaker/blob/Run2_2017/Utils/src/MinDeltaRDouble.
 
 <br>
 
-The higher statistics GJets_0p4 sample has a hard cutoff <0.4! So we need to do something different. We use the sum of the lower-statistics GJets, with the hard cutoff at 0.05, and QCD samples to get the number of photons with deltaR<0.4. In order to not overcount, a _stitch point_ is defined where QCD is used for values less then the stitch point and GJets is used for values greater than the stitch points. This value is nominally set to 0.4, but values 0.05 -> 0.4 make perfect sense.
+A fragmentation photon is one defined such that deltaR<0.4. The fragmentation fraction is defined as the the number of events with deltaR>0.4 divided by the total number of events. One needs to include these events in the MC as the cutoff is only artificial.
 
-This uses the GJets and QCD MC samples to calculate the fraction. GJets_0p4 is used in the other components of the Zinv estimate, so this is independent of the 'primary' MC sample, which I guess is nice.
+The higher statistics GJets_0p4 sample has a hard cutoff at deltaR>0.4. So we need to make an estimate of the number of fragmentation photons so we can scale this MC sample appropriately. We use the sum of the lower-statistics GJets, with the hard cutoff at 0.05, and QCD samples to get the number of photons with deltaR<0.4. In order to not overcount, a _stitch point_ is defined where QCD is used for values less then the stitch point and GJets is used for values greater than the stitch points. The stictch point value is nominally set to 0.4, but values 0.05 -> 0.4 make perfect sense and can be used as an estimation of the systematic errors.
+
+This uses the GJets and QCD MC samples to calculate the fraction. GJets_0p4 is used in the other components of the Zinv estimate, so this is independent of the 'primary' MC sample, which is nice.
 
 <br>
 

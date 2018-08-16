@@ -10,8 +10,7 @@ This makes use of the madMinPhotonDeltaR variable, defined in the TreeMaker modu
 
 https://github.com/TreeMaker/TreeMaker/blob/Run2_2017/Utils/src/MinDeltaRDouble.cc
 
-
-
+<br>
 *Step 1:*
 To see what is going on, plot the madMinPhotonDeltaR distribution for the GJets, GJets_0p4 and QCD HT-binned MC samples:
 
@@ -19,6 +18,7 @@ To see what is going on, plot the madMinPhotonDeltaR distribution for the GJets,
 
 This is Figure 34 of AN-2016/350.
 
+<br>
 
 A fragmentation photon is one defined such that deltaR<0.4. The fragmentation fraction is defined as the the number of events with deltaR>0.4 divided by the total number of events.
 
@@ -26,7 +26,7 @@ The higher statistics GJets_0p4 sample has a hard cutoff <0.4! So we need to do 
 
 This uses the GJets and QCD MC samples to calculate the fraction. GJets_0p4 is used in the other components of the Zinv estimate, so this is independent of the 'primary' MC sample, which I guess is nice.
 
-
+<br>
 *Step 2:*
 Make the root file containing the fragmentation histograms:
 
@@ -40,6 +40,7 @@ Make the root file containing the fragmentation histograms:
 This code is able to calculate the fraction the low-deltaphi estimate as well (the lines are all there, just comment/uncomment appropriately.
 
 
+<br>
 *Step 3:*
 Plot the fraction for all the analysis bins:
 

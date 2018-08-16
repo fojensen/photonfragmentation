@@ -87,13 +87,13 @@
 
 void runHist(const TString histname, const bool isWide=false)
 {
-   TFile * f_0p4 = TFile::Open("fragmentation.hdp.0p4.root");
+   TFile * f_0p4 = TFile::Open("fragmentation.hdp.sp0p4.root");
    TGraphAsymmErrors * g_0p4 = (TGraphAsymmErrors*)f_0p4->Get(histname);
 
-   TFile * f_0p3 = TFile::Open("fragmentation.hdp.0p3.root");
+   TFile * f_0p3 = TFile::Open("fragmentation.hdp.sp0p3.root");
    TGraphAsymmErrors * g_0p3 = (TGraphAsymmErrors*)f_0p3->Get(histname);
 
-   TFile * f_0p2 = TFile::Open("fragmentation.hdp.0p2.root");
+   TFile * f_0p2 = TFile::Open("fragmentation.hdp.sp0p2.root");
    TGraphAsymmErrors * g_0p2 = (TGraphAsymmErrors*)f_0p2->Get(histname);
 
    const int n = g_0p4->GetN();
@@ -204,8 +204,8 @@ void runHist(const TString histname, const bool isWide=false)
 
 void dfover1mf()
 {
-   runHist("HT");
-   runHist("MHT");
-   runHist("NJets");
+   //runHist("HT");
+   //runHist("MHT");
+   //runHist("NJets");
    runHist("bin46_NJets789", true);
 }

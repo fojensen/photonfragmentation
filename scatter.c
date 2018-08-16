@@ -8,13 +8,13 @@
 
 void scatter()
 {
-   TFile * f_0p4 = TFile::Open("fragmentation.hdp.0p4.root");
+   TFile * f_0p4 = TFile::Open("fragmentation.hdp.sp0p4.root");
    TGraphAsymmErrors * g_0p4 = (TGraphAsymmErrors*)f_0p4->Get("bin46_NJets789");
 
-   TFile * f_0p3 = TFile::Open("fragmentation.hdp.0p3.root");
+   TFile * f_0p3 = TFile::Open("fragmentation.hdp.sp0p3.root");
    TGraphAsymmErrors * g_0p3 = (TGraphAsymmErrors*)f_0p3->Get("bin46_NJets789");
 
-   TFile * f_0p2 = TFile::Open("fragmentation.hdp.0p2.root");
+   TFile * f_0p2 = TFile::Open("fragmentation.hdp.sp0p2.root");
    TGraphAsymmErrors * g_0p2 = (TGraphAsymmErrors*)f_0p2->Get("bin46_NJets789");
 
    TH1D * h3 = new TH1D("h3", ";#DeltaF_{dir} / (1 - F_{dir});number of bins", 20, -1., 1.);
@@ -81,7 +81,7 @@ void scatter()
    st21->Draw();
    st22->Draw();
 
-   labelCMS("", true);
+   labelCMS();
    c2->SaveAs("plots/fragSystematics46Scatter.pdf");  
 }
 

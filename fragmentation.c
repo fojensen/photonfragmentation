@@ -124,15 +124,15 @@ TGraphAsymmErrors * divideHists(TH1D * hist[3], const TString name)
 
 void fragmentation::run()
 {
+   const double sp = 0.2; const TString spTag = "sp0p2";
+   //const double sp = 0.3; const TString spTag = "sp0p3";
+   //const double sp = 0.4; const TString spTag = "sp0p4";
+
    const TString dir = "/eos/uscms/store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV12/tree_GJet_CleanVars/";
    const TString dirTag = "hdp";
 
    //const TString dir = "/eos/uscms/store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV12/tree_GJetLDP_CleanVars/";
    //const TString dirTag = "ldp";
-
-   //const double sp = 0.3; const TString spTag = "sp0p3";
-   const double sp = 0.4; const TString spTag = "sp0p4";
-   //const double sp = 0.5; const TString spTag = "sp0p5";
 
    TChain * cQCD = new TChain("tree");
    cQCD->Add(dir + "tree_QCD_HT-200to300.root");

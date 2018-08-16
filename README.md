@@ -15,21 +15,19 @@ https://github.com/TreeMaker/TreeMaker/blob/Run2_2017/Utils/src/MinDeltaRDouble.
 
 <br>
 
-A fragmentation photon is one defined such that deltaR<0.4. The fragmentation fraction is defined as the the number of photons with deltaR>0.4 divided by the total number of photons. One needs to include these events in the MC as the cutoff is only artificial.
+A fragmentation photon is one defined such that dr<0.4. The fragmentation fraction is defined as the the number of photons with dr>0.4 divided by the total number of photons. One needs to include these events in the MC as the cutoff is only artificial and does not match data.
 
-The higher statistics GJets_0p4 sample has a hard cutoff at deltaR>0.4. So we need to make an estimate of the number of fragmentation photons so we can scale this MC sample appropriately. We use the sum of the lower-statistics GJets, with the hard cutoff at 0.05, and QCD samples to get the number of photons with deltaR<0.4. In order to not overcount, a _stitch point_ is defined where QCD is used for values less then the stitch point and GJets is used for values greater than the stitch points. The stictch point value is nominally set to 0.4, but values 0.05 -> 0.4 make perfect sense and can be used as an estimation of the systematic errors.
-
-This uses the GJets and QCD MC samples to calculate the fraction. GJets_0p4 is used in the other components of the Zinv estimate, so this is independent of the 'primary' MC sample, which is nice.
+The higher statistics GJets_0p4 sample has a hard cutoff requiring dr>0.4. So we need to make an estimate of the number of fragmentation photons to scale GJets_0p4 appropriately as this sample is used in the Zinv estimation. We use the sum of the lower-statistics GJets, with the hard cutoff requiring dr>0.05, and QCD samples to get the number of photons with dr<0.4. In order to not overcount, a _stitch point_ is defined where QCD is used for values less then the stitch point and GJets is used for values greater than the stitch point (but always less than 0.4). The stitch point value is nominally set to 0.4, but values 0.05 -> 0.4 make perfect sense and can be used for an estimation of the systematic errors associated with this choice.
 
 <br>
 
 ### Step 1:
 
-To see what is going on, plot the madMinPhotonDeltaR distribution for the GJets, GJets_0p4 and QCD HT-binned MC samples:
+To see what is going on with these distributions, plot the madMinPhotonDeltaR for the GJets, GJets_0p4 and QCD HT-binned MC samples:
 
 `root madMinPhotonDeltaR.c+`
 
-This is Figure 34 of AN-2016/350.
+This is Figure 34 of AN-2016/350. You can also change the x-axis to get a broader view which is informative(?).
 
 
 ### Step 2:
@@ -42,7 +40,7 @@ Make the root file containing the fragmentation histograms:
 
 `f.run()`
 
-This code is able to calculate the fraction the low-deltaphi estimate as well (the lines are all there, just comment/uncomment appropriately. Three files were made for three different stitch points of 0.2, 0.3, 0.4, to be used for systematic errors, comment the appropriate lines out to do each sp file in turn...
+This code is able to calculate the fraction the low-deltaphi estimate as well (the lines are all there, just comment/uncomment appropriately). Three files need to made for stitch points of 0.2, 0.3, 0.4, to be used for systematic errors (comment the appropriate lines out to do each sp file in turn...)
 
 
 ### Step 3:

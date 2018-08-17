@@ -3,15 +3,11 @@
 
 <br>
 
-Further information about the study may be found in AN-2016/350:
-
-http://cms.cern.ch/iCMS/analysisadmin/cadilines?line=SUS-16-033
+Further information about the study may be found in AN-2016/350:<br>http://cms.cern.ch/iCMS/analysisadmin/cadilines?line=SUS-16-033
 
 <br>
 
-This makes use of the madMinPhotonDeltaR variable, defined in the TreeMaker module here:
-
-https://github.com/TreeMaker/TreeMaker/blob/Run2_2017/Utils/src/MinDeltaRDouble.cc
+This makes use of the madMinPhotonDeltaR variable, defined in the TreeMaker module here:<br>https://github.com/TreeMaker/TreeMaker/blob/Run2_2017/Utils/src/MinDeltaRDouble.cc
 
 <br>
 

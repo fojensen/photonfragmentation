@@ -5,14 +5,11 @@
 
 Further information about the study may be found in AN-2016/350:<br>http://cms.cern.ch/iCMS/analysisadmin/cadilines?line=SUS-16-033
 
-<br>
 
 This makes use of the madMinPhotonDeltaR variable, defined in the TreeMaker module here:<br>https://github.com/TreeMaker/TreeMaker/blob/Run2_2017/Utils/src/MinDeltaRDouble.cc
 
-<br>
 
 A fragmentation photon is one defined such that dr<0.4. The fragmentation fraction is defined as the the number of photons with dr>0.4 divided by the total number of photons. 
-
 
 The high statistics GJets_0p4 sample used in the Zinv estimation has a hard cutoff requiring dr>0.4. One needs to account for these events in the MC as any cutoff is artificial and does not match data.
 

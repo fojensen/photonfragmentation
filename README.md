@@ -15,9 +15,12 @@ https://github.com/TreeMaker/TreeMaker/blob/Run2_2017/Utils/src/MinDeltaRDouble.
 
 <br>
 
-A fragmentation photon is one defined such that dr<0.4. The fragmentation fraction is defined as the the number of photons with dr>0.4 divided by the total number of photons. One needs to include these events in the MC as the cutoff is only artificial and does not match data.
+A fragmentation photon is one defined such that dr<0.4. The fragmentation fraction is defined as the the number of photons with dr>0.4 divided by the total number of photons. 
 
-The higher statistics GJets_0p4 sample has a hard cutoff requiring dr>0.4. So we need to make an estimate of the number of fragmentation photons to scale GJets_0p4 appropriately as this sample is used in the Zinv estimation. We use the sum of the lower-statistics GJets, with the hard cutoff requiring dr>0.05, and QCD samples to get the number of photons with dr<0.4. In order to not overcount, a _stitch point_ is defined where QCD is used for values less then the stitch point and GJets is used for values greater than the stitch point (but always less than 0.4). The stitch point value is nominally set to 0.4, but values 0.05 -> 0.4 make perfect sense and can be used for an estimation of the systematic errors associated with this choice.
+
+The (high statistics) GJets_0p4 sample has a hard cutoff requiring dr>0.4. One needs to account for these events in the MC as any cutoff is artificial and does not match data.
+
+We use the sum of the lower-statistics GJets, with the hard cutoff requiring dr>0.05, and QCD samples to get the number of photons with dr<0.4. In order to not overcount, a _stitch point_ is defined where QCD is used for values less then the stitch point and GJets is used for values greater than the stitch point (but always less than 0.4). The stitch point value is nominally set to 0.4, but values 0.05 -> 0.4 make perfect sense and can be used for an estimation of the systematic errors associated with this choice.
 
 <br>
 

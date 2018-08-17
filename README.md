@@ -35,9 +35,9 @@ Make the root file containing the fragmentation histograms:
 
 `f.run()`
 
-Three files need to made for stitch points of 0.2, 0.3, 0.4, to be used for systematic errors (comment/uncomment appropriately).
+Three files need to made for stitch points of 0.2, 0.3, and 0.4 to be used for systematic errors (comment/uncomment code appropriately).
 
-This code is able to calculate the fraction the low-deltaphi estimate as well (comment/uncomment appropriately).
+This code is able to calculate the fraction the low-deltaphi estimate as well (comment/uncomment code appropriately).
 
 ### Step 3:
 

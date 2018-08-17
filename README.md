@@ -27,7 +27,7 @@ To see what is going on with these distributions, plot the madMinPhotonDeltaR fo
 
 `root madMinPhotonDeltaR.c+`
 
-This is Figure 34 of AN-2016/350. You can also change the x-axis to get a broader view which is informative(?).
+This is Figure 34 of AN-2016/350.
 
 
 ### Step 2:
@@ -40,8 +40,8 @@ Make the root file containing the fragmentation histograms:
 
 `f.run()`
 
-This code is able to calculate the fraction the low-deltaphi estimate as well (the lines are all there, just comment/uncomment appropriately). Three files need to made for stitch points of 0.2, 0.3, 0.4, to be used for systematic errors (comment the appropriate lines out to do each sp file in turn...)
-
+Three files need to made for stitch points of 0.2, 0.3, 0.4, to be used for systematic errors (comment/uncomment appropriately).
+This code is able to calculate the fraction the low-deltaphi estimate as well (comment/uncomment appropriately).
 
 ### Step 3:
 

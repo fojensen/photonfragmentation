@@ -22,7 +22,7 @@ To see what is going on with these distributions, plot the madMinPhotonDeltaR fo
 
 `root madMinPhotonDeltaR.c+`
 
-This is Figure 34 of AN-2016/350.
+This produces Figure 34 of AN-2016/350.
 
 
 ### Step 2:
@@ -46,7 +46,8 @@ Plot the fraction for all the analysis bins:
 `root fragPlot.c+`
 
 This produces plots of the fragmentation binned in HT, MHT, NJets, and the 46-bin analysis plane.
-This produces Figure 35 of AN-2016/350 (46-bin analysis plane).
+
+This produces Figure 35 of AN-2016/350.
 
 ### Step 4:
 
@@ -54,6 +55,6 @@ For a systematic error, see how the fraction changes when using a stitch point o
 
 `root dfover1mf.c+`
 
-If you want a simpler value to assign for the systematic error, and not bin by bin, we can look at the scatter of the central value of the differences (i.e. ignoring the statistical error seen in the plot):
+If you want a simpler value to assign for the systematic error, and not bin by bin, we can look at the scatter of the central value of the differences (ignoring the statistical error seen in the bin-by-bin plot):
 
 `root scatter.c+`

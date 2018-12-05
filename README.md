@@ -35,9 +35,9 @@ Make the root file containing the fragmentation histograms:
 
 `f.run()`
 
-Three files need to made for stitch points of 0.2, 0.3, and 0.4 to be used for systematic errors (comment/uncomment code appropriately).
+Three files need to made for stitch points of 0.2, 0.3, and 0.4 to be used for systematic errors. To change these values comment/uncomment lines 127-129.
 
-This code is able to calculate the fraction the low-deltaphi estimate as well (comment/uncomment code appropriately).
+This code is also able to calculate the fraction the low-deltaphi region used for the QCD estimate. Comment/uncomment lines 131-137.
 
 ### Step 3:
 
@@ -45,8 +45,8 @@ Plot the fraction for all the analysis bins:
 
 `root fragPlot.c+`
 
-This produces Figure 35 of AN-2016/350. It also produces some _usual suspects_...
-
+This produces plots of the fragmentation binned in HT, MHT, NJets, and the 46-bin analysis plane.
+This produces Figure 35 of AN-2016/350 (46-bin analysis plane).
 
 ### Step 4:
 

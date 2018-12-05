@@ -35,9 +35,13 @@ Make the root file containing the fragmentation histograms:
 
 `f.run()`
 
-Three files need to made for stitch points of 0.2, 0.3, and 0.4 to be used for systematic errors. To change these values comment/uncomment lines 127-129.
+Three files need to made for stitch points of 0.2, 0.3, and 0.4 to be used for systematic errors.
 
-This code is also able to calculate the fraction the low-deltaphi region used for the QCD estimate. Comment/uncomment lines 131-137.
+To do so, comment/uncomment [lines 127-129](https://github.com/fojensen/photonfragmentation/blob/master/fragmentation.c#L127-L129) appropriately.
+
+This code is also able to calculate the fraction the low-deltaphi region used for the QCD estimate.
+
+To do so, comment/uncomment [lines 131-137](https://github.com/fojensen/photonfragmentation/blob/master/fragmentation.c#L131-L137) appropriately.
 
 ### Step 3:
 

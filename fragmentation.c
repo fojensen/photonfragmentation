@@ -124,13 +124,15 @@ TGraphAsymmErrors * divideHists(TH1D * hist[3], const TString name)
 
 void fragmentation::run()
 {
-   const double sp = 0.2; const TString spTag = "sp0p2";
+   //const double sp = 0.2; const TString spTag = "sp0p2";
    //const double sp = 0.3; const TString spTag = "sp0p3";
-   //const double sp = 0.4; const TString spTag = "sp0p4";
+   const double sp = 0.4; const TString spTag = "sp0p4";
 
+   // nominal high-delta phi region
    const TString dir = "/eos/uscms/store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV12/tree_GJet_CleanVars/";
    const TString dirTag = "hdp";
-
+   
+   // low-delta phi region for QCD estimate
    //const TString dir = "/eos/uscms/store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV12/tree_GJetLDP_CleanVars/";
    //const TString dirTag = "ldp";
 

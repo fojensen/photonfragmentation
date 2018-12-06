@@ -26,7 +26,7 @@ To see what is going on with these distributions, plot the madMinPhotonDeltaR fo
 
 This produces Figure 34 of AN-2016/350.
 
-To produce a plot with a wider range, comment [lines 34-40](https://github.com/fojensen/photonfragmentation/blob/master/madMinPhotonDeltaR.c#L34-L40) appropriately.
+To produce a plot with a wider range, comment/uncomment [lines 34-40](https://github.com/fojensen/photonfragmentation/blob/master/madMinPhotonDeltaR.c#L34-L40) appropriately.
 
 
 ### Step 2:

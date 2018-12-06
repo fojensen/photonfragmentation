@@ -8,6 +8,16 @@
 
 void madMinPhotonDeltaR()
 {
+   TChain * chain_Zinv = new TChain("tree");
+   const TString sigdir = "/eos/uscms/store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV12/tree_signal/";
+   chain_Zinv->Add(sigdir + "tree_ZJetsToNuNu_HT-100to200.root");
+   chain_Zinv->Add(sigdir + "tree_ZJetsToNuNu_HT-200to400.root");
+   chain_Zinv->Add(sigdir + "tree_ZJetsToNuNu_HT-400to600.root");
+   chain_Zinv->Add(sigdir + "tree_ZJetsToNuNu_HT-600to800.root");
+   chain_Zinv->Add(sigdir + "tree_ZJetsToNuNu_HT-800to1200.root");
+   chain_Zinv->Add(sigdir + "tree_ZJetsToNuNu_HT-1200to2500.root");
+   chain_Zinv->Add(sigdir + "tree_ZJetsToNuNu_HT-2500toInf.root");
+   
    const TString dir = "/eos/uscms/store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV12/tree_GJet_CleanVars/";
 
    TChain * chain_GJets = new TChain("tree");
@@ -40,6 +50,7 @@ void madMinPhotonDeltaR()
    //const TString savetag = "widerange";
 
    hist->SetLineWidth(2);
+   TH1D * dr_Zinv = (TH1D*)hist->Clone("dr_Zinv");
    TH1D * dr_GJets = (TH1D*)hist->Clone("dr_GJets");
    TH1D * dr_GJets0p4 = (TH1D*)hist->Clone("dr_GJets0p4");
    TH1D * dr_QCD = (TH1D*)hist->Clone("dr_QCD");
@@ -49,18 +60,22 @@ void madMinPhotonDeltaR()
    const TCut cuts_tracks = "isoElectronTracks==0 && isoMuonTracks==0 && isoPionTracks==0";
    const TCut cuts_dphi = "DeltaPhi1>=0.5 && DeltaPhi2>=0.5 && DeltaPhi3>=0.3 && DeltaPhi4>=0.3";
    TCut cuts_baseline = "NJets>=2 && HT>=300. && MHT>=300. && JetID==1 && BTags==0";
-   cuts_baseline = cuts_photon && cuts_leptons && cuts_tracks && cuts_dphi && cuts_baseline;
+   cuts_baseline = cuts_leptons && cuts_tracks && cuts_dphi && cuts_baseline;
    
+   char cuts_Zinv[2000];
+   sprintf(cuts_Zinv, "Weight * 35862.824 * (%s)", TString(cuts_baseline).Data());
+   std::cout << "filling from Zinv..." << std::endl;
+   chain_Zinv->Project("dr_Zinv", "madMinPhotonDeltaR", cuts_Zinv);
+
    char cuts_GJets[2000];
-   sprintf(cuts_GJets, "Weight * 35862.824 * (%s)", TString(cuts_baseline).Data());
+   sprintf(cuts_GJets, "Weight * 35862.824 * (%s)", TString(cuts_baseline && cuts_photon).Data());
    std::cout << "filling from GJets..." << std::endl;
    chain_GJets->Project("dr_GJets", "madMinPhotonDeltaR", cuts_GJets);
-
    std::cout << "filling from GJets0p4..." << std::endl;
    chain_GJets0p4->Project("dr_GJets0p4", "madMinPhotonDeltaR", cuts_GJets);
 
    char cuts_QCD[2000];
-   sprintf(cuts_QCD, "Weight * 35862.824 * (%s && madMinDeltaRStatus==1)", TString(cuts_baseline).Data());
+   sprintf(cuts_QCD, "Weight * 35862.824 * (%s && madMinDeltaRStatus==1)", TString(cuts_baseline && cuts_photon).Data());
    std::cout << "filling from QCD..." << std::endl;
    chain_QCD->Project("dr_QCD", "madMinPhotonDeltaR", cuts_QCD);
 
@@ -68,6 +83,8 @@ void madMinPhotonDeltaR()
    dr_GJets->SetLineColor(8);
    dr_GJets0p4->SetLineColor(7);
    dr_QCD->SetLineColor(6);
+   dr_Zinv->SetLineColor(9);
+   dr_Zinv->SetLineStyle(2);
 
    dr_GJets->Draw("HIST, E");
    dr_GJets->SetMinimum(0.);
@@ -75,13 +92,15 @@ void madMinPhotonDeltaR()
    dr_GJets->SetStats(0);
    dr_GJets0p4->Draw("HIST, E, SAME");
    dr_QCD->Draw("HIST, E, SAME");
+   dr_Zinv->Draw("HIST, E, SAME");
 
    TLegend * l = new TLegend(0.225, 0.725, 0.865, 0.89);
-   l->SetNColumns(3);
+   l->SetNColumns(2);
    l->SetBorderSize(0);
    l->AddEntry(dr_GJets, "GJets_HT", "L");
    l->AddEntry(dr_GJets0p4, "GJets_DR-0p4_HT", "L");
    l->AddEntry(dr_QCD, "QCD_HT", "L");
+   l->AddEntry(dr_Zinv, "ZJetsToNuNu_HT", "L");
    l->Draw();
 
    labelCMS();

@@ -11,22 +11,22 @@ This makes use of the madMinPhotonDeltaR variable, defined in the TreeMaker modu
 
 A fragmentation photon is one defined such that dr<0.4. The fragmentation fraction is defined as the the number of photons with dr>0.4 divided by the total number of photons. 
 
-The high statistics GJets_0p4 sample used in the Zinv estimation has a hard cutoff requiring dr>0.4. One needs to account for these events in the MC as any cutoff is artificial and does not match data.
+The high statistics GJets_0p4_HT sample used in the Z->nunu estimation has a hard cutoff requiring dr>0.4. One needs to account for these events in the MC as any cutoff is artificial and does not match data. More practically, this feature is not present in the ZJetsToNuNu_HT MC due to the non-zero Z mass.
 
-We use the sum of the low statistics GJets, with the hard cutoff requiring dr>0.05, and QCD samples to get the number of photons with dr<0.4. In order to not overcount, a _stitch point_ is defined where QCD is used for values less then the stitch point and GJets is used for values greater than the stitch point. The stitch point value is nominally set to 0.4, but values 0.05 -> 0.4 make perfect sense and can be used for an estimation of the systematic errors associated with this choice.
+We use the sum of the low statistics GJets_HT, with the hard cutoff requiring dr>0.05, and QCD_HT samples to get the number of photons with dr<0.4. In order to not overcount, a _stitch point_ is defined where QCD_HT is used for values less then the stitch point and GJets_HT is used for values greater than the stitch point. The stitch point value is nominally set to 0.4, but values 0.05 -> 0.4 make perfect sense and can be used for an estimation of the systematic errors associated with this choice.
 
 ![Equation for F_{dir}](.Fdir.png "Equation for F_{dir}")
 
 
 ### Step 1:
 
-To see what is going on with these distributions, plot the madMinPhotonDeltaR for the GJets, GJets_0p4 and QCD HT-binned MC samples:
+To see what is going on with these distributions, plot the madMinPhotonDeltaR for the GJets_HT, GJets_0p4_HT and QCD_HT MC samples:
 
 `root madMinPhotonDeltaR.c+`
 
 This produces Figure 34 of AN-2016/350.
 
-To produce a plot with a wider range, comment/uncomment [lines 34-40](https://github.com/fojensen/photonfragmentation/blob/master/madMinPhotonDeltaR.c#L34-L40) appropriately.
+To produce a plot with a wider range, comment/uncomment [lines 44-50](https://github.com/fojensen/photonfragmentation/blob/master/madMinPhotonDeltaR.c#L44-L50) appropriately.
 
 
 ### Step 2:

@@ -20,7 +20,7 @@ We use the sum of the low statistics GJets_HT, with the hard cutoff requiring dr
 
 ### Step 1:
 
-To see what is going on with these distributions, plot the madMinPhotonDeltaR for the GJets_HT, GJets_0p4_HT and QCD_HT MC samples:
+To see what is going on with these distributions, plot the madMinPhotonDeltaR for the MC samples:
 
 `root madMinPhotonDeltaR.c+`
 

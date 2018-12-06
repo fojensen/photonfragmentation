@@ -94,13 +94,13 @@ void madMinPhotonDeltaR()
    dr_QCD->Draw("HIST, E, SAME");
    dr_Zinv->Draw("HIST, E, SAME");
 
-   TLegend * l = new TLegend(0.225, 0.725, 0.865, 0.89);
+   TLegend * l = new TLegend(0.225, 0.75, 0.865, 0.89);
    l->SetNColumns(2);
    l->SetBorderSize(0);
-   l->AddEntry(dr_GJets, "GJets_HT", "L");
-   l->AddEntry(dr_GJets0p4, "GJets_DR-0p4_HT", "L");
-   l->AddEntry(dr_QCD, "QCD_HT", "L");
-   l->AddEntry(dr_Zinv, "ZJetsToNuNu_HT", "L");
+   l->AddEntry(dr_GJets, "GJets", "L");
+   l->AddEntry(dr_GJets0p4, "GJets_DR-0p4", "L");
+   l->AddEntry(dr_QCD, "QCD", "L");
+   l->AddEntry(dr_Zinv, "ZJetsToNuNu", "L");
    l->Draw();
 
    labelCMS();

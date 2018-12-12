@@ -94,11 +94,11 @@ int whichBin_HTMHT(const double HT, const double MHT)
 
 int whichBin_NJets(const int NJets)
 {
-   if (NJets==2) return 1;
-   if (NJets==3||NJets==4) return 2;
-   if (NJets==5||NJets==6) return 3;
-   if (NJets==7||NJets==8) return 4;
-   if (NJets>=9) return 5;
+   if (NJets==2||NJets==3) return 1;
+   if (NJets==4||NJets==5) return 2;
+   if (NJets==6||NJets==7) return 3;
+   if (NJets==8||NJets==9) return 4;
+   if (NJets>=10) return 5;
    return 0;
 }
 

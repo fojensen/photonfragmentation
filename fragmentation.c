@@ -1,5 +1,4 @@
 #include <TFile.h>
-#include <TGraphAsymmErrors.h>
 #include <iostream>
 #include "analysisTools.h"
 #include <TChain.h>
@@ -19,7 +18,6 @@ class fragmentation
       double HT, MHT;
       int NJets, JetID, BTags;
       int isoElectronTracks, isoMuonTracks, isoPionTracks;
-      double DeltaPhi1, DeltaPhi2, DeltaPhi3, DeltaPhi4;
       double Weight;
       std::vector<TLorentzVector> *Electrons, *Muons, *Photons;
       std::vector<bool> *Photons_fullID;
@@ -41,10 +39,6 @@ void fragmentation::initChain(TChain * chain)
    chain->SetBranchAddress("isoElectronTracks", &isoElectronTracks);
    chain->SetBranchAddress("isoMuonTracks", &isoMuonTracks);
    chain->SetBranchAddress("isoPionTracks", &isoPionTracks);
-   chain->SetBranchAddress("DeltaPhi1", &DeltaPhi1);
-   chain->SetBranchAddress("DeltaPhi2", &DeltaPhi2);
-   chain->SetBranchAddress("DeltaPhi3", &DeltaPhi3);
-   chain->SetBranchAddress("DeltaPhi4", &DeltaPhi4);
    chain->SetBranchAddress("Weight", &Weight);
    chain->SetBranchAddress("JetID", &JetID);
    chain->SetBranchAddress("madMinPhotonDeltaR", &madMinPhotonDeltaR);
@@ -78,13 +72,14 @@ void fragmentation::fillHists(TChain * chain, const int hid, const double sp)
    for (int i = 0; i < chain->GetEntries(); ++i) {
       chain->GetEntry(i);
       if (!passBaseline()) continue;
-      if (MHT<250.) continue;
 
+      // QCD
       if (hid==0) {
          if (madMinDeltaRStatus!=1) continue;
          if (madMinPhotonDeltaR>=sp) continue;
       }
-      if (hid==1 && madMinPhotonDeltaR<0.4) continue; // hard cutoff set by MC production
+      // GJets
+      if (hid==1 && madMinPhotonDeltaR<0.4) continue;
       if (hid==2 && madMinPhotonDeltaR<sp) continue;
   
       Weight = Weight * 35862.824;
@@ -109,7 +104,7 @@ void fragmentation::fillHists(TChain * chain, const int hid, const double sp)
    }
 }
 
-TGraphAsymmErrors * divideHists(TH1D * hist[3], const TString name)
+/*TGraphAsymmErrors * divideHists(TH1D * hist[3], const TString name)
 {
    TH1D * num = (TH1D*)hist[1]->Clone("num_"+name);
    TH1D * denom = (TH1D*)hist[0]->Clone("denom_"+name);
@@ -120,6 +115,19 @@ TGraphAsymmErrors * divideHists(TH1D * hist[3], const TString name)
    sprintf(buffer, ";%s;fragmentation fraction", hist[0]->GetXaxis()->GetTitle());
    graph->SetTitle(buffer);
    return graph;
+}*/
+
+TH1D * divideHists(TH1D * hist[3], const TString name)
+{
+   TH1D * num = (TH1D*)hist[1]->Clone("num");
+   num->SetName(name);
+   TH1D * denom = (TH1D*)hist[0]->Clone("denom");
+   denom->Add(hist[2]);
+   num->Divide(num, denom, 1, 1, "B");
+   char buffer[1000];
+   sprintf(buffer, ";%s;fragmentation fraction", hist[0]->GetXaxis()->GetTitle());
+   num->SetTitle(buffer);
+   return num;
 }
 
 void fragmentation::run()
@@ -185,29 +193,28 @@ void fragmentation::run()
    sprintf(buffer, "fragmentation.%s.%s.root", dirTag.Data(), spTag.Data());
    TFile * f = new TFile(buffer, "RECREATE");
 
-   TGraphAsymmErrors * g_inc = divideHists(h_inc, "inc");
+   TH1D * g_inc = divideHists(h_inc, "inc");
    g_inc->Write();
-
-   TGraphAsymmErrors * g_HT = divideHists(h_HT, "HT");
+   
+   TH1D * g_HT = divideHists(h_HT, "HT");
    g_HT->Write();
-
-   TGraphAsymmErrors * g_MHT = divideHists(h_MHT, "MHT");
-   for (int i = 0; i < 3; ++i) h_MHT[i]->Write();
+   
+   TH1D * g_MHT = divideHists(h_MHT, "MHT");
    g_MHT->Write();
-
-   TGraphAsymmErrors * g_NJets = divideHists(h_NJets, "NJets");
+   
+   TH1D * g_NJets = divideHists(h_NJets, "NJets");
    g_NJets->Write();
-
-   TGraphAsymmErrors * g_bin46 = divideHists(h_bin46, "bin46");
-   g_bin46->Write(); 
- 
-   TGraphAsymmErrors * g_bin46_NJets789 = divideHists(h_bin46_NJets789, "bin46_NJets789");
+   
+   TH1D * g_bin46 = divideHists(h_bin46, "bin46");
+   g_bin46->Write();
+   
+   TH1D * g_bin46_NJets789 = divideHists(h_bin46_NJets789, "bin46_NJets789");
    g_bin46_NJets789->Write();
- 
-   TGraphAsymmErrors * g_bin59 = divideHists(h_bin59, "bin59");
+   
+   TH1D * g_bin59 = divideHists(h_bin59, "bin59");
    g_bin59->Write();
-
-   TGraphAsymmErrors * g_bin59_NJets789 = divideHists(h_bin59_NJets789, "bin59_NJets789");
+   
+   TH1D * g_bin59_NJets789 = divideHists(h_bin59_NJets789, "bin59_NJets789");
    g_bin59_NJets789->Write();
 
    f->Close();

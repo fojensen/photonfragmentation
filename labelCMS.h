@@ -6,9 +6,9 @@ void labelCMS(const bool showlumi = false)
    label0->SetFillColor(0);
    label0->SetTextAlign(31);
    if (showlumi) {
-      label0->AddText("CMS Simulation  #it{Preliminary}   35.9 fb^{1}  13 TeV");
+      label0->AddText("Simulation  #it{Preliminary}   35.9 fb^{1}  13 TeV");
    } else {
-      label0->AddText("CMS Simulation  #it{Preliminary}   13 TeV");
+      label0->AddText("Simulation  #it{Preliminary}   13 TeV");
    }
    label0->Draw();
 }

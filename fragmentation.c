@@ -27,7 +27,7 @@ class fragmentation
       TH1D *h_inc[3];
       TH1D *h_HT[3], *h_MHT[3], *h_NJets[3];
       TH1D *h_bin50[3], *h_bin65[3];
-      TH1D *h_bin50_NJets789[3], *h_bin65_NJets789[3];
+      TH1D *h_bin50_NJets8910[3], *h_bin65_NJets8910[3];
 };
 
 void fragmentation::initChain(TChain * chain)
@@ -57,7 +57,7 @@ bool fragmentation::passBaseline()
       if (isoElectronTracks==0 && isoMuonTracks==0 && isoPionTracks==0) {
          if (Electrons->size()==0 && Muons->size()==0 && Photons->size()==1) {
             if (Photons->at(0).Pt()>=200. && Photons_fullID->at(0)==1) {
-               if (whichBin_HTMHT13(HT, MHT)>0) {
+               if (whichBin_HTMHT13(HT, MHT, NJets)>0) {
                   return true;
                }
             }
@@ -84,26 +84,27 @@ void fragmentation::fillHists(TChain * chain, const int hid, const double sp)
   
       Weight = Weight * 35862.824;
  
-      h_bin65[hid]->Fill(whichBin_65(NJets, HT, MHT), Weight);
+      h_bin65[hid]->Fill(whichBin_65(HT, MHT, NJets), Weight);
       h_MHT[hid]->Fill(MHT, Weight);
       for (int j = 1; j <= 65; ++j) {
-         if (whichBin_65_NJets789(NJets, HT, MHT, j)) {
-            h_bin65_NJets789[hid]->Fill(j, Weight);
+         if (whichBin_65_NJets8910(HT, MHT, NJets, j)) {
+            h_bin65_NJets8910[hid]->Fill(j, Weight);
          }
       }
       if (MHT<300.) continue;
       h_inc[hid]->Fill(1., Weight);
       h_HT[hid]->Fill(HT, Weight);
       h_NJets[hid]->Fill(NJets, Weight);
-      h_bin50[hid]->Fill(whichBin_50(NJets, HT, MHT), Weight);
+      h_bin50[hid]->Fill(whichBin_50(HT, MHT, NJets), Weight);
       for (int j = 1; j <= 50; ++j) { 
-         if (whichBin_50_NJets789(NJets, HT, MHT, j)) {
-            h_bin50_NJets789[hid]->Fill(j, Weight);
+         if (whichBin_50_NJets8910(HT, MHT, NJets, j)) {
+            h_bin50_NJets8910[hid]->Fill(j, Weight);
          } 
       }
    }
 }
 
+// to be used when weights are not used
 /*TGraphAsymmErrors * divideHists(TH1D * hist[3], const TString name)
 {
    TH1D * num = (TH1D*)hist[1]->Clone("num_"+name);
@@ -132,9 +133,9 @@ TH1D * divideHists(TH1D * hist[3], const TString name)
 
 void fragmentation::run()
 {
-   //const double sp = 0.2; const TString spTag = "sp0p2";
+   const double sp = 0.2; const TString spTag = "sp0p2";
    //const double sp = 0.3; const TString spTag = "sp0p3";
-   const double sp = 0.4; const TString spTag = "sp0p4";
+   //const double sp = 0.4; const TString spTag = "sp0p4";
 
    // nominal high-delta phi region
    const TString dir = "/eos/uscms/store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV12/tree_GJet_CleanVars/";
@@ -169,8 +170,8 @@ void fragmentation::run()
       h_NJets[i] = new TH1D("h_NJets_"+l[i], ";NJets;events / 1", 9, 1.5, 10.5);
       h_bin50[i] = new TH1D("h_bin50_"+l[i], ";50-bin NJets-HT-MHT analysis plane;events / bin", 50, 0.5, 50.5);
       h_bin65[i] = new TH1D("h_bin65_"+l[i], ";65-bin NJets-HT-MHT analysis plane;events / bin", 65, 0.5, 65.5);
-      h_bin50_NJets789[i] = new TH1D("h_bin50_NJets789_"+l[i], ";50-bin NJets-HT-MHT analysis plane;events / bin", 50, 0.5, 50.5);
-      h_bin65_NJets789[i] = new TH1D("h_bin65_NJets789_"+l[i], ";65-bin NJets-HT-MHT analysis plane;events / bin", 65, 0.5, 65.5);
+      h_bin50_NJets8910[i] = new TH1D("h_bin50_NJets8910_"+l[i], ";50-bin NJets-HT-MHT analysis plane;events / bin", 50, 0.5, 50.5);
+      h_bin65_NJets8910[i] = new TH1D("h_bin65_NJets8910_"+l[i], ";65-bin NJets-HT-MHT analysis plane;events / bin", 65, 0.5, 65.5);
    }
 
    std::cout << "filling QCD hists..." << std::endl;
@@ -181,12 +182,12 @@ void fragmentation::run()
    fillHists(cGJets, 2, sp); // values greater than sp
   
    TH1D *h_bin46[3], *h_bin59[3];
-   TH1D *h_bin46_NJets789[3], *h_bin59_NJets789[3];
+   TH1D *h_bin46_NJets8910[3], *h_bin59_NJets8910[3];
    for (int i = 0; i < 3; ++i) {
       h_bin46[i] = binShifts46(h_bin50[i], "h_bin46_"+l[i]);
       h_bin59[i] = binShifts59(h_bin65[i], "h_bin59_"+l[i]);
-      h_bin46_NJets789[i] = binShifts46(h_bin50_NJets789[i], "h_bin46_NJets789_"+l[i]);
-      h_bin59_NJets789[i] = binShifts59(h_bin65_NJets789[i], "h_bin59_NJets789_"+l[i]);
+      h_bin46_NJets8910[i] = binShifts46(h_bin50_NJets8910[i], "h_bin46_NJets8910_"+l[i]);
+      h_bin59_NJets8910[i] = binShifts59(h_bin65_NJets8910[i], "h_bin59_NJets8910_"+l[i]);
    }
 
    char buffer[200];
@@ -208,14 +209,14 @@ void fragmentation::run()
    TH1D * g_bin46 = divideHists(h_bin46, "bin46");
    g_bin46->Write();
    
-   TH1D * g_bin46_NJets789 = divideHists(h_bin46_NJets789, "bin46_NJets789");
-   g_bin46_NJets789->Write();
+   TH1D * g_bin46_NJets8910 = divideHists(h_bin46_NJets8910, "bin46_NJets8910");
+   g_bin46_NJets8910->Write();
    
    TH1D * g_bin59 = divideHists(h_bin59, "bin59");
    g_bin59->Write();
    
-   TH1D * g_bin59_NJets789 = divideHists(h_bin59_NJets789, "bin59_NJets789");
-   g_bin59_NJets789->Write();
+   TH1D * g_bin59_NJets8910 = divideHists(h_bin59_NJets8910, "bin59_NJets8910");
+   g_bin59_NJets8910->Write();
 
    f->Close();
 }

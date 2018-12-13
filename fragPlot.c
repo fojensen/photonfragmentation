@@ -25,13 +25,13 @@ void fragPlot()
    //TFile * f = TFile::Open("fragmentation.ldp.sp0p4.root");
 
    TCanvas * c1 = new TCanvas("c1", "", 600., 400.); 
-   TH1D * g_bin46_NJets789 = (TH1D*)f->Get("bin46_NJets789");
-   g_bin46_NJets789->SetMarkerStyle(20);
-   g_bin46_NJets789->Draw("PE");
-   g_bin46_NJets789->SetMinimum(0.7);
-   g_bin46_NJets789->SetMaximum(1.01);
-   drawLines46(g_bin46_NJets789->GetMinimum(), g_bin46_NJets789->GetMaximum());
-   g_bin46_NJets789->SetStats(0);
+   TH1D * g_bin46_NJets8910 = (TH1D*)f->Get("bin46_NJets8910");
+   g_bin46_NJets8910->SetMarkerStyle(20);
+   g_bin46_NJets8910->Draw("PE");
+   g_bin46_NJets8910->SetMinimum(0.7);
+   g_bin46_NJets8910->SetMaximum(1.01);
+   drawLines46(g_bin46_NJets8910->GetMinimum(), g_bin46_NJets8910->GetMaximum());
+   g_bin46_NJets8910->SetStats(0);
    labelCMS();
    c1->SaveAs("plots/fragmentation.pdf");
 

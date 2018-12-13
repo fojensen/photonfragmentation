@@ -2,11 +2,11 @@
 #include <TLegend.h>
 #include "labelCMS.h"
 #include <TFile.h>
-#include <TGraphAsymmErrors.h>
-#include <TGraphErrors.h>
+#include <TH1D.h>
 #include <TCanvas.h>
 #include <TAxis.h>
 #include "analysisTools.h"
+#include <TGraphErrors.h>
 
 /*void yields(const TString histname, const bool isWide = false, const bool doLog = false)
 {
@@ -88,18 +88,17 @@
 void runHist(const TString histname, const bool isWide=false)
 {
    TFile * f_0p4 = TFile::Open("fragmentation.hdp.sp0p4.root");
-   TGraphAsymmErrors * g_0p4 = (TGraphAsymmErrors*)f_0p4->Get(histname);
+   TH1D * g_0p4 = (TH1D*)f_0p4->Get(histname);
 
    TFile * f_0p3 = TFile::Open("fragmentation.hdp.sp0p3.root");
-   TGraphAsymmErrors * g_0p3 = (TGraphAsymmErrors*)f_0p3->Get(histname);
+   TH1D * g_0p3 = (TH1D*)f_0p3->Get(histname);
 
    TFile * f_0p2 = TFile::Open("fragmentation.hdp.sp0p2.root");
-   TGraphAsymmErrors * g_0p2 = (TGraphAsymmErrors*)f_0p2->Get(histname);
-
-   const int n = g_0p4->GetN();
+   TH1D * g_0p2 = (TH1D*)f_0p2->Get(histname);
+ 
+   const int n = g_0p4->GetNbinsX();
    TGraphErrors * df0p3 = new TGraphErrors(n);
    TGraphErrors * df0p2 = new TGraphErrors(n);
-
    char title[1000];
    sprintf(title, "%s;%s;%s", "", g_0p4->GetXaxis()->GetTitle(), "#DeltaF_{dir} / (1 - F_{dir})");
    df0p3->SetTitle(title);
@@ -107,42 +106,43 @@ void runHist(const TString histname, const bool isWide=false)
    
    for (int i = 0; i < n; ++i) {
       
-      std::cout << "point " << i << std::endl;   
+      std::cout << "point " << i << std::endl;
 
-      double x0, y0;
-      g_0p4->GetPoint(i, x0, y0);
-      double y0err = g_0p4->GetErrorY(i);
-      std::cout << y0 << " " << y0err << std::endl;
+      const int x0 = g_0p4->GetBinCenter(i+1);
 
-      double x1, y1;
-      g_0p3->GetPoint(i, x1, y1);
-      double y1err = g_0p3->GetErrorY(i);
-      std::cout << y1 << " " << y1err << std::endl;
+      const double y4 = g_0p4->GetBinContent(i+1);
+      const double y4err = g_0p4->GetBinError(i+1);
+      std::cout << y4 << " " << y4err << std::endl;
 
-      double x2, y2;
-      g_0p2->GetPoint(i, x2, y2);
-      double y2err = g_0p2->GetErrorY(i);
+      const double y3 = g_0p3->GetBinContent(i+1);
+      const double y3err = g_0p3->GetBinError(i+1);
+      std::cout << y3 << " " << y3err << std::endl;
+
+      const double y2 = g_0p2->GetBinContent(i+1);
+      const double y2err = g_0p2->GetBinError(i+1);
       std::cout << y2 << " " << y2err << std::endl;
-      
-      double val1 = (y1-y0)/(1.-y0);
-      df0p3->SetPoint(i, x0, val1);
-      double err1 = pow(1.-y0, 2)*pow(y1err, 2) + pow(1.-y1, 2)*pow(y0err, 2);
-      err1 = sqrt(err1)/pow(1.-y0, 2);
-      df0p3->SetPointError(i, 0., err1);
-      std::cout << val1 << " " << err1 << std::endl;
+     
+      double val3 = (y3-y4)/(1.-y4);
+      df0p3->SetPoint(i, x0, val3);
+      double err3 = pow(1.-y4, 2)*pow(y3err, 2) + pow(1.-y3, 2)*pow(y4err, 2);
+      err3 = sqrt(err3)/pow(1.-y4, 2);
+      df0p3->SetPointError(i, 0., err3);
+      std::cout << val3 << " " << err3 << std::endl;
 
-      double val2 = (y2-y0)/(1.-y0);
+      double val2 = (y2-y4)/(1.-y4);
       df0p2->SetPoint(i, x0, val2);
-      double err2 = pow(1.-y0, 2)*pow(y2err, 2) + pow(1.-y2, 2)*pow(y0err, 2);
-      err2 = sqrt(err2)/pow(1.-y0, 2);
-      df0p2->SetPointError(i, 0., err2);
+      double err2 = pow(1.-y2, 2)*pow(y2err, 2) + pow(1.-y2, 2)*pow(y4err, 2);
+      err2 = sqrt(err2)/pow(1.-y4, 2);
+      df0p2->SetPointError(i, 0, err2);
       std::cout << val2 << " " << err2 << std::endl;
    
       std::cout << "" << std::endl;
    }
 
+ 
    double width = 400.;
    if (isWide) width = 600.;
+   
    TCanvas * c = new TCanvas("c", "", width, 400.);
 
    df0p3->SetMarkerStyle(20);
@@ -170,13 +170,13 @@ void runHist(const TString histname, const bool isWide=false)
    c->SaveAs("plots/dfover1mf." + histname + ".pdf");
 
    TCanvas * c2 = new TCanvas("c2", "", width, 400.);
-
    g_0p3->SetMarkerStyle(20);
    g_0p3->SetMarkerColor(4);
    g_0p3->SetLineColor(4);
-   g_0p3->Draw("APE");
+   g_0p3->Draw("PE");
    g_0p3->SetMinimum(0.6);
    g_0p3->SetMaximum(1.05);
+   g_0p3->SetStats(0);
 
    if (isWide) drawLines46(0.6, 1.05);
 
@@ -207,5 +207,5 @@ void dfover1mf()
    //runHist("HT");
    //runHist("MHT");
    //runHist("NJets");
-   runHist("bin46_NJets789", true);
+   runHist("bin46_NJets8910", true);
 }

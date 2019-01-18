@@ -53,10 +53,10 @@ void fragmentation::initChain(TChain * chain)
 
 bool fragmentation::passBaseline()
 { 
-   if (NJets>=2 && HT>=300. && MHT>=250. && JetID==1 && BTags==0) {
+   if (HT>=300. && NJets>=2 && JetID==1 && MHT>=300. && BTags==0) {
       if (isoElectronTracks==0 && isoMuonTracks==0 && isoPionTracks==0) {
          if (Electrons->size()==0 && Muons->size()==0 && Photons->size()==1) {
-            if (Photons->at(0).Pt()>=200. && Photons_fullID->at(0)==1) {
+            if (Photons->at(0).Pt()>=200. && Photons_fullID->at(0)==1 && Photons_hasPixelSeed==0) {
                if (whichBin_HTMHT13(HT, MHT, NJets)>0) {
                   return true;
                }
@@ -138,28 +138,28 @@ void fragmentation::run()
    //const double sp = 0.4; const TString spTag = "sp0p4";
 
    // nominal high-delta phi region
-   const TString dir = "/eos/uscms/store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV12/tree_GJet_CleanVars/";
+   const TString dir = "/eos/uscms/store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV16/tree_GJet_CleanVars/";
    const TString dirTag = "hdp";
    
    // low-delta phi region for QCD estimate
-   //const TString dir = "/eos/uscms/store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV12/tree_GJetLDP_CleanVars/";
+   //const TString dir = "/eos/uscms/store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV16/tree_GJetLDP_CleanVars/";
    //const TString dirTag = "ldp";
 
    TChain * cQCD = new TChain("tree");
-   cQCD->Add(dir + "tree_QCD_HT-200to300.root");
-   cQCD->Add(dir + "tree_QCD_HT-300to500.root");
-   cQCD->Add(dir + "tree_QCD_HT-500to700.root");
-   cQCD->Add(dir + "tree_QCD_HT-700to1000.root");
-   cQCD->Add(dir + "tree_QCD_HT-1000to1500.root");
-   cQCD->Add(dir + "tree_QCD_HT-1500to2000.root");
-   cQCD->Add(dir + "tree_QCD_HT-2000toInf.root");
+   cQCD->Add(dir + "tree_QCD_HT-200to300_MC2017.root");
+   cQCD->Add(dir + "tree_QCD_HT-300to500_MC2017.root");
+   cQCD->Add(dir + "tree_QCD_HT-500to700_MC2017.root");
+   cQCD->Add(dir + "tree_QCD_HT-700to1000_MC2017.root");
+   cQCD->Add(dir + "tree_QCD_HT-1000to1500_MC2017.root");
+   cQCD->Add(dir + "tree_QCD_HT-1500to2000_MC2017.root");
+   cQCD->Add(dir + "tree_QCD_HT-2000toInf_MC2017.root");
    initChain(cQCD);
 
    TChain * cGJets = new TChain("tree");
-   cGJets->Add(dir + "tree_GJets_HT-100to200.root");
-   cGJets->Add(dir + "tree_GJets_HT-200to400.root");
-   cGJets->Add(dir + "tree_GJets_HT-400to600.root");
-   cGJets->Add(dir + "tree_GJets_HT-600toInf.root");
+   cGJets->Add(dir + "tree_GJets_HT-100to200_MC2017.root");
+   cGJets->Add(dir + "tree_GJets_HT-200to400_MC2017.root");
+   cGJets->Add(dir + "tree_GJets_HT-400to600_MC2017.root");
+   cGJets->Add(dir + "tree_GJets_HT-600toInf_MC2017.root");
    initChain(cGJets);
     
    TString l[3] = {"QCD_0tosp", "GJets_spto0p4", "GJets_gtsp"};

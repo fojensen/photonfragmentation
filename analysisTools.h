@@ -15,7 +15,6 @@ void drawLines46(const double min, const double max)
       line[i]->SetLineColor(2);
       line[i]->Draw();
    }
-
 }
 
 TH1D * binShifts46(TH1D * inHist, const TString name)
@@ -50,81 +49,66 @@ TH1D * binShifts59(TH1D * inHist, const TString name)
    return hist;
 }
 
-int whichBin_HTMHT13(const double HT, const double MHT, const int NJets)
-{  
-   // 250 <= MHT < 300
-   if (HT>=300.  && HT<500.  && MHT>=250. && MHT<300.) return 1;
-   //if (HT>=300.  && HT<500.  && MHT>=250. && MHT<300.) if (NJets<7) return 1;
-   if (HT>=500.  && HT<1000. && MHT>=250. && MHT<300.) return 2;
-   if (HT>=1000.             && MHT>=250. && MHT<300.) return 3;
-   // 300 <= MHT < 350
-   if (HT>=300.  && HT<500.  && MHT>=300. && MHT<350.) return 4;
-   //if (HT>=300.  && HT<500.  && MHT>=300. && MHT<350.) if (NJets<7) return 4;
-   if (HT>=500.  && HT<1000. && MHT>=300. && MHT<350.) return 5;
-   if (HT>=1000.             && MHT>=300. && MHT<350.) return 6;
-   // 350 <= MHT < 500
-   if (HT>=350.  && HT<500.  && MHT>=350. && MHT<500.) return 7;
-   //if (HT>=350.  && HT<500.  && MHT>=350. && MHT<500.) if (NJets<7) return 7;
-   if (HT>=500.  && HT<1000. && MHT>=350. && MHT<500.) return 8;
-   if (HT>=1000.             && MHT>=350. && MHT<500.) return 9;
-   // 500 <= MHT < 750
-   if (HT>=500.  && HT<1000. && MHT>=500. && MHT<750.) return 10;
-   if (HT>=1000.             && MHT>=500. && MHT<750.) return 11;
-    // 750 <= MHT 
-   if (HT>=750.  && HT<1500. && MHT>=750.            ) return 12;
-   if (HT>=1500.             && MHT>=750.            ) return 13;
+int whichBin_NJets(const int NJets)
+{
+   if (NJets==2||NJets==3) return 1;
+   if (NJets==4||NJets==5) return 2;
+   if (NJets==6||NJets==7) return 3;
+   if (NJets==8||NJets==9) return 4;
+   if (NJets>=10) return 5;  
    return 0;
 }
 
 int whichBin_HTMHT(const double HT, const double MHT, const int NJets)
-{
-   // 300 < MHT < 350
-   if (HT>=300.  && HT<500.  && MHT>=300. && MHT<350.) return 1;
-   //if (HT>=300.  && HT<500.  && MHT>=300. && MHT<350.) if (NJets<7) return 1;
-   if (HT>=500.  && HT<1000. && MHT>=300. && MHT<350.) return 2;
-   if (HT>=1000.             && MHT>=300. && MHT<350.) return 3;
-   // 350 < MHT < 500
-   if (HT>=350.  && HT<500.  && MHT>=350. && MHT<500.) return 4;
-   //if (HT>=350.  && HT<500.  && MHT>=350. && MHT<500.) if (NJets<7) return 4;
-   if (HT>=500.  && HT<1000. && MHT>=350. && MHT<500.) return 5;
-   if (HT>=1000.             && MHT>=350. && MHT<500.) return 6;
-   // 500 < MHT < 750
-   if (HT>=500.  && HT<1000. && MHT>=500. && MHT<750.) return 7;
-   if (HT>=1000.             && MHT>=500. && MHT<750.) return 8;
-    // 750 < MHT
-   if (HT>=750.  && HT<1500. && MHT>=750.            ) return 9;
-   if (HT>=1500.             && MHT>=750.            ) return 10;
+{  
+   // 300 <= MHT < 350
+   if (HT>=300.  && HT<600.  && MHT>=300. && MHT<350.) return 1;
+   if (HT>=600.  && HT<1200. && MHT>=300. && MHT<350.) return 2;
+   if (HT>=1200.             && MHT>=300. && MHT<350.) return 3;
+   // 350 <= MHT < 600
+   if (HT>=350.  && HT<600.  && MHT>=350. && MHT<600.) return 4;
+   if (HT>=600.  && HT<1200. && MHT>=350. && MHT<600.) return 5;
+   if (HT>=1200.             && MHT>=350. && MHT<600.) return 6;
+   // 600 <= MHT < 850
+   if (HT>=600.  && HT<1200. && MHT>=600. && MHT<850.) return 7;
+   if (HT>=1200.             && MHT>=600. && MHT<850.) return 8;
+    // 850 >= MHT 
+   if (HT>=850.  && HT<1700. && MHT>=850.            ) return 9;
+   if (HT>=1700.             && MHT>=850.            ) return 10;
    return 0;
 }
 
-int whichBin_NJets(const int NJets)
-{
-   if (NJets==2) return 1;
-   if (NJets==3||NJets==4) return 2;
-   if (NJets==5||NJets==6) return 3;
-   if (NJets==7||NJets==8) return 4;
-   if (NJets>=9) return 5;
-   //if (NJets==2||NJets==3) return 1;
-   //if (NJets==4||NJets==5) return 2;
-   //if (NJets==6||NJets==7) return 3;
-   //if (NJets==8||NJets==9) return 4;
-   //if (NJets>=10) return 5;  
+int whichBin_HTMHT13(const double HT, const double MHT, const int NJets)
+{  
+   // 250 <= MHT < 300
+   if (HT>=300.  && HT<600.  && MHT>=250. && MHT<300.) return 1;
+   if (HT>=600.  && HT<1200. && MHT>=250. && MHT<300.) return 2;
+   if (HT>=1200.             && MHT>=250. && MHT<300.) return 3;
+   // 300 <= MHT < 350
+   if (HT>=300.  && HT<600.  && MHT>=300. && MHT<350.) return 4;
+   if (HT>=600.  && HT<1200. && MHT>=300. && MHT<350.) return 5;
+   if (HT>=1200.             && MHT>=300. && MHT<350.) return 6;
+   // 350 <= MHT < 600
+   if (HT>=350.  && HT<600.  && MHT>=350. && MHT<600.) return 7;
+   if (HT>=600.  && HT<1200. && MHT>=350. && MHT<600.) return 8;
+   if (HT>=1000.             && MHT>=350. && MHT<600.) return 9;
+   // 600 <= MHT < 850
+   if (HT>=600.  && HT<1200. && MHT>=600. && MHT<850.) return 10;
+   if (HT>=1200.             && MHT>=600. && MHT<850.) return 11;
+    // 850 >= MHT 
+   if (HT>=850.  && HT<1700. && MHT>=850.            ) return 12;
+   if (HT>=1700.             && MHT>=850.            ) return 13;
    return 0;
 }
 
 std::vector<int> whichBin_NJets8910(const int NJets)
 {
    std::vector<int> vec;
-   if (NJets==2) vec.push_back(1);
-   if (NJets==3||NJets==4) vec.push_back(2);
-   if (NJets==5||NJets==6) vec.push_back(3);
-   if (NJets>=7) vec.push_back(4);
-   if (NJets>=7) vec.push_back(5);
-   //if (NJets==2||NJets==3) vec.push_back(1);
-   //if (NJets==4||NJets==5) vec.push_back(2);
-   //if (NJets==6||NJets==7) vec.push_back(3);
-   //if (NJets>=8) vec.push_back(4);
-   //if (NJets>=8) vec.push_back(5);
+   if (NJets==2||NJets==3) vec.push_back(1);
+   if (NJets==4||NJets==5) vec.push_back(2);
+   if (NJets==6||NJets==7) vec.push_back(3);
+   if (NJets>=8) vec.push_back(4);
+   if (NJets>=8) vec.push_back(5);
    return vec;
 }
 

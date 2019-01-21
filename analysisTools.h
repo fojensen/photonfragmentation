@@ -73,19 +73,19 @@ int whichBin_NJets(const int NJets)
 int whichBin_HTMHT(const double HT, const double MHT, const int NJets)
 {  
    // 300 <= MHT < 350
-   if (HT>=300.  && HT<600.  && MHT>=300. && MHT<350.) return 1;
-   if (HT>=600.  && HT<1200. && MHT>=300. && MHT<350.) return 2;
-   if (HT>=1200.             && MHT>=300. && MHT<350.) return 3;
+   if (HT>=300.  && HT<600.  && MHT>=300. && MHT<350. && NJets<=7) return 1;
+   if (HT>=600.  && HT<1200. && MHT>=300. && MHT<350.)             return 2;
+   if (HT>=1200.             && MHT>=300. && MHT<350.)             return 3;
    // 350 <= MHT < 600
-   if (HT>=350.  && HT<600.  && MHT>=350. && MHT<600.) return 4;
-   if (HT>=600.  && HT<1200. && MHT>=350. && MHT<600.) return 5;
-   if (HT>=1200.             && MHT>=350. && MHT<600.) return 6;
+   if (HT>=350.  && HT<600.  && MHT>=350. && MHT<600. && NJets<=7) return 4;
+   if (HT>=600.  && HT<1200. && MHT>=350. && MHT<600.)             return 5;
+   if (HT>=1200.             && MHT>=350. && MHT<600.)             return 6;
    // 600 <= MHT < 850
-   if (HT>=600.  && HT<1200. && MHT>=600. && MHT<850.) return 7;
-   if (HT>=1200.             && MHT>=600. && MHT<850.) return 8;
+   if (HT>=600.  && HT<1200. && MHT>=600. && MHT<850.)             return 7;
+   if (HT>=1200.             && MHT>=600. && MHT<850.)             return 8;
     // 850 >= MHT 
-   if (HT>=850.  && HT<1700. && MHT>=850.            ) return 9;
-   if (HT>=1700.             && MHT>=850.            ) return 10;
+   if (HT>=850.  && HT<1700. && MHT>=850.            )             return 9;
+   if (HT>=1700.             && MHT>=850.            )             return 10;
    return 0;
 }
 

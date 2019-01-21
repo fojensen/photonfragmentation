@@ -132,25 +132,31 @@ TGraphAsymmErrors * divideHists(TH1D * hist[3], const TString name)
    TH1D * num = (TH1D*)hist[1]->Clone("num_"+name);
    TH1D * denom = (TH1D*)hist[0]->Clone("denom_"+name);
    denom->Add(hist[2]);
-   //TGraphAsymmErrors * graph = new TGraphAsymmErrors(num, denom, "");
    const int nbins = hist[0]->GetNbinsX();
+   //TGraphAsymmErrors * graph = new TGraphAsymmErrors(num, denom, "");
    TGraphAsymmErrors * graph = new TGraphAsymmErrors(nbins);
    for (int i = 1; i <= nbins; ++i) {
-      const double x = num->GetBinCenter(i);
-      const double ynum = num->GetBinContent(i);
-      const double ynumerr = num->GetBinError(i);
-      const double ydenom = denom->GetBinContent(i);
-      const double ydenomerr = denom->GetBinError(i);
-      double f = 1;
-      double ferrup = 0.;
-      double ferrdown = 1.;
-      if (ydenom>0.) {
-         f = ynum / ydenom;
-         ferrup = sqrt(ferrup*ferrup+ferrdown*ferrdown);
-         ferrdown = ferrup;
+      const int x = denom->GetBinCenter(i);
+      const double denom1 = denom->GetBinContent(i);
+      if (denom1>0.) {
+          const double num1 = num->GetBinContent(i);
+          const double num1err = num->GetBinError(i);
+          const double denom1err = denom->GetBinError(i);
+          TH1D h_num1("h_num1", ";;", 1, 0.5, 1.5);
+          h_num1.SetBinContent(i, num1);
+          h_num1.SetBinError(i, num1err);
+          TH1D h_denom1("h_denom1", ";;", 1, 0.5, 1.5);
+          h_denom1.SetBinContent(i, denom1);
+          h_denom1.SetBinError(i, denom1err);
+          TGraphAsymmErrors g1(&h_num1, &h_denom1);
+          double x[1], f[1];
+          g1.GetPoint(0, x[0], f[0]);
+          graph->SetPoint(i-1, *x, *f);
+          graph->SetPointError(i-1, 0., 0., g1.GetErrorXlow(0), g1.GetErrorXhigh(0));
+      } else { 
+         graph->SetPoint(i-1, x, 1.);
+         graph->SetPointError(i-1, 0., 0., 1., 0.);
       }
-      graph->SetPoint(i-1, x, f);
-      graph->SetPointError(i-1, 0., 0., ferrdown, ferrup);
    }
 
    graph->SetName(name);

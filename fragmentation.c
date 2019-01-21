@@ -152,7 +152,7 @@ TGraphAsymmErrors * divideHists(TH1D * hist[3], const TString name)
           double x[1], f[1];
           g1.GetPoint(0, x[0], f[0]);
           graph->SetPoint(i-1, *x, *f);
-          graph->SetPointError(i-1, 0., 0., g1.GetErrorXlow(0), g1.GetErrorXhigh(0));
+          graph->SetPointError(i-1, 0., 0., g1.GetErrorYlow(0), g1.GetErrorYhigh(0));
       } else { 
          graph->SetPoint(i-1, x, 1.);
          graph->SetPointError(i-1, 0., 0., 1., 0.);

@@ -21,7 +21,7 @@ void drawLines46(const double min, const double max)
 
 void fragPlot()
 {
-   TFile * f = TFile::Open("fragmentation.hdp.sp0p4.root");
+   TFile * f = TFile::Open("fragmentation.hdp.sp0p4.2016..root");
    //TFile * f = TFile::Open("fragmentation.ldp.sp0p4.root");
 
    TCanvas * c1 = new TCanvas("c1", "", 600., 400.); 
@@ -33,17 +33,20 @@ void fragPlot()
    drawLines46(g_bin46_NJets8910->GetMinimum(), g_bin46_NJets8910->GetMaximum());
    g_bin46_NJets8910->SetStats(0);
    labelCMS();
-   c1->SaveAs("plots/fragmentation.pdf");
+   c1->SaveAs("plots/fragmentation.2016.pdf");
 
-   TCanvas * c2 = new TCanvas("c2", "", 1200., 400.);
-   c2->Divide(3, 1);
+   TCanvas * c2 = new TCanvas("c2", "", 800, 800);
+   c2->Divide(2, 2);
+
+   const double ymin = 0.85;
+   const double ymax = 1.01;
 
    c2->cd(1);
    TH1D * g_HT = (TH1D*)f->Get("HT");
    g_HT->SetMarkerStyle(20);
    g_HT->Draw("PE");
-   g_HT->SetMinimum(0.7);
-   g_HT->SetMaximum(1.01);
+   g_HT->SetMinimum(ymin);
+   g_HT->SetMaximum(ymax);
    g_HT->SetStats(0);
    labelCMS();
 
@@ -51,8 +54,8 @@ void fragPlot()
    TH1D * g_MHT = (TH1D*)f->Get("MHT");
    g_MHT->SetMarkerStyle(20);
    g_MHT->Draw("PE");
-   g_MHT->SetMinimum(0.7);
-   g_MHT->SetMaximum(1.01);
+   g_MHT->SetMinimum(ymin);
+   g_MHT->SetMaximum(ymax);
    g_MHT->SetStats(0);
    labelCMS();
 
@@ -60,11 +63,20 @@ void fragPlot()
    TH1D * g_NJets = (TH1D*)f->Get("NJets");
    g_NJets->SetMarkerStyle(20);
    g_NJets->Draw("PE");
-   g_NJets->SetMinimum(0.7);
-   g_NJets->SetMaximum(1.01);
+   g_NJets->SetMinimum(ymin);
+   g_NJets->SetMaximum(ymax);
    g_NJets->SetStats(0);
    labelCMS();
 
-   c2->SaveAs("plots/fragmentation.vars.pdf");
+   c2->cd(4);
+   TH1D * g_HTMHT = (TH1D*)f->Get("HTMHT");
+   g_HTMHT->SetMarkerStyle(20);
+   g_HTMHT->Draw("PE");
+   g_HTMHT->SetMinimum(ymin);
+   g_HTMHT->SetMaximum(ymax);
+   g_HTMHT->SetStats(0);
+   labelCMS();
+
+   c2->SaveAs("plots/fragmentation.vars.2016.pdf");
 }
 

@@ -1,6 +1,17 @@
 #include <TH1D.h>
 #include <TLine.h>
 
+void addOverflow(TH1D * h)
+{
+   const int n = h->GetNbinsX();
+   const double y_overflow = h->GetBinContent(n+1);
+   // add overflow to last bin, errors are taken care of naturally
+   h->AddBinContent(n, y_overflow);
+   // set overflow to last bin
+   h->SetBinContent(h->GetBinContent(n+1), h->GetBinContent(n));
+   h->SetBinError(h->GetBinContent(n+1), h->GetBinError(n));   
+}
+
 void drawLines46(const double min, const double max)
 {
    TLine * line[6];

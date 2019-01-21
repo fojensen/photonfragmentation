@@ -150,7 +150,7 @@ TGraphAsymmErrors * divideHists(TH1D * hist[3], const TString name)
          ferrdown = ferrup;
       }
       graph->SetPoint(i-1, x, f);
-      graph->SetPointError(i, 0., 0., ferrdown, ferrup);
+      graph->SetPointError(i-1, 0., 0., ferrdown, ferrup);
    }
 
    graph->SetName(name);

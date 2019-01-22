@@ -27,7 +27,7 @@ class fragmentation
       std::vector<double> *Photons_hasPixelSeed;
 
       TH1D *h_inc[3];
-      TH1D *h_HT[3], *h_MHT[3], *h_NJets[3];
+      TH1D *h_HT[3], *h_MHT[3], *h_NJets[3], *h_BTags[3];
       TH1D *h_HTMHT[3], *h_bin50[3], *h_bin65[3];
       TH1D *h_bin50_NJets8910[3], *h_bin65_NJets8910[3];
 };
@@ -57,7 +57,7 @@ void fragmentation::initChain(TChain * chain)
 
 bool fragmentation::passBaseline()
 { 
-   if (HT>=300. && NJets>=2 && JetID==1 && MHT>=300. && BTags==0) {
+   if (HT>=300. && NJets>=2 && JetID==1 && MHT>=300.) {
       if (isoElectronTracks==0 && isoMuonTracks==0 && isoPionTracks==0) {
          if (Electrons->size()==0 && Muons->size()==0 && Photons->size()==1) {
             if (Photons->at(0).Pt()>=200. && Photons_fullID->at(0)==1 && Photons_hasPixelSeed->at(0)==0) {
@@ -86,8 +86,6 @@ void fragmentation::fillHists(TChain * chain, const int hid, const double sp)
       if (hid==1 && madMinPhotonDeltaR<0.4) continue;
       if (hid==2 && madMinPhotonDeltaR<sp) continue;
   
-      Weight = Weight * 35862.824;
-
       if (MHT<250.) continue; 
       h_bin65[hid]->Fill(whichBin_65(HT, MHT, NJets), Weight);
       h_MHT[hid]->Fill(MHT, Weight);
@@ -100,6 +98,7 @@ void fragmentation::fillHists(TChain * chain, const int hid, const double sp)
       h_inc[hid]->Fill(1., Weight);
       h_HT[hid]->Fill(HT, Weight);
       h_NJets[hid]->Fill(NJets, Weight);
+      h_BTags[hid]->Fill(BTags, Weight);
       h_HTMHT[hid]->Fill(whichBin_HTMHT(HT, MHT, NJets), Weight);  
       h_bin50[hid]->Fill(whichBin_50(HT, MHT, NJets), Weight);
       for (int j = 1; j <= 50; ++j) { 
@@ -112,6 +111,7 @@ void fragmentation::fillHists(TChain * chain, const int hid, const double sp)
     addOverflow(h_HT[hid]);
     addOverflow(h_MHT[hid]);
     addOverflow(h_NJets[hid]);
+    addOverflow(h_BTags[hid]);
 }
 
 /*TGraphAsymmErrors * divideHists(TH1D * hist[3], const TString name)
@@ -153,7 +153,8 @@ TGraphAsymmErrors * divideHists(TH1D * hist[3], const TString name)
           g1.GetPoint(0, x[0], f[0]);
           graph->SetPoint(i-1, *x, *f);
           graph->SetPointError(i-1, 0., 0., g1.GetErrorYlow(0), g1.GetErrorYhigh(0));
-      } else { 
+      } else {
+         std::cout << "screwy point; bin: " << i << std::endl;
          graph->SetPoint(i-1, x, 1.);
          graph->SetPointError(i-1, 0., 0., 1., 0.);
       }
@@ -194,7 +195,7 @@ void fragmentation::run()
    //const TString dirTag = "ldp";
 
    char buffer[200];
-   sprintf(buffer, "fragmentation.%s.%s.TH1D", dirTag.Data(), spTag.Data());
+   sprintf(buffer, "fragmentation.%s.%s", dirTag.Data(), spTag.Data());
 
    TChain * cQCD = new TChain("tree");
    cQCD->Add(dir + "tree_QCD_HT-200to300_MC2017.root");
@@ -224,6 +225,7 @@ void fragmentation::run()
       h_MHT[i] = new TH1D("h_MHT_"+l[i], ";MHT [GeV];events / bin", nMHT, xMHT);
       h_HTMHT[i] = new TH1D("h_HTMHT_"+l[i], ";10-bin HT-MHT plane;events / bin", 11, -0.5, 10.5);
       h_NJets[i] = new TH1D("h_NJets_"+l[i], ";NJets;events / bin", nNJets, xNJets);
+      h_BTags[i] = new TH1D("h_BTags_"+l[i], ";BTags;events / bin", 4, -0.5, 3.5);
       h_bin50[i] = new TH1D("h_bin50_"+l[i], ";50-bin NJets-HT-MHT plane;events / bin", 51, -0.5, 50.5);
       h_bin65[i] = new TH1D("h_bin65_"+l[i], ";65-bin NJets-HT-MHT plane;events / bin", 66, -0.5, 65.5);
       h_bin50_NJets8910[i] = new TH1D("h_bin50_NJets8910_"+l[i], ";50-bin NJets-HT-MHT plane;events / bin", 51, -0.5, 50.5);
@@ -246,26 +248,19 @@ void fragmentation::run()
       h_bin59_NJets8910[i] = binShifts59(h_bin65_NJets8910[i], "h_bin59_NJets8910_"+l[i]);
    }
 
-   //TH1D * g_inc = divideHists(h_inc, "inc");
-   //TH1D * g_HT = divideHists(h_HT, "HT");
-   //TH1D * g_MHT = divideHists(h_MHT, "MHT")
-   //TH1D * g_NJets = divideHists(h_NJets, "NJets");
-   //TH1D * g_HTMHT = divideHists(h_HTMHT, "HTMHT");
-   TGraphAsymmErrors * g_bin46 = divideHists(h_bin46, "bin46");
-   TGraphAsymmErrors * g_bin46_NJets8910 = divideHists(h_bin46_NJets8910, "bin46_NJets8910");
-   //TH1D * g_bin59 = divideHists(h_bin59, "bin59");
-   //TH1D * g_bin59_NJets8910 = divideHists(h_bin59_NJets8910, "bin59_NJets8910");
+   TFile * f = new TFile(TString(buffer)+".root", "RECREATE");   
 
-   TFile * f = new TFile(TString(buffer)+".root", "RECREATE");
-   //g_inc->Write()
-   //g_HT->Write();
-   //g_MHT->Write();
-   //g_NJets->Write();
-   //g_HTMHT->Write();  
-   g_bin46->Write(); 
-   g_bin46_NJets8910->Write();
- //  g_bin59->Write();
-   //g_bin59_NJets8910->Write();
+   TGraphAsymmErrors * g_inc = divideHists(h_inc, "g_inc"); g_inc->Write();
+   TGraphAsymmErrors * g_HT = divideHists(h_HT, "g_HT"); g_HT->Write();
+   TGraphAsymmErrors * g_MHT = divideHists(h_MHT, "g_MHT"); g_MHT->Write();
+   TGraphAsymmErrors * g_NJets = divideHists(h_NJets, "g_NJets"); g_NJets->Write();
+   TGraphAsymmErrors * g_HTMHT = divideHists(h_HTMHT, "g_HTMHT"); g_HTMHT->Write();
+   TGraphAsymmErrors * g_BTags = divideHists(h_BTags, "g_BTags"); g_BTags->Write();
+   TGraphAsymmErrors * g_bin46 = divideHists(h_bin46, "g_bin46"); g_bin46->Write();
+   TGraphAsymmErrors * g_bin46_NJets8910 = divideHists(h_bin46_NJets8910, "g_bin46_NJets8910"); g_bin46_NJets8910->Write();
+   TGraphAsymmErrors * g_bin59 = divideHists(h_bin59, "g_bin59"); g_bin59->Write();
+   TGraphAsymmErrors * g_bin59_NJets8910 = divideHists(h_bin59_NJets8910, "g_bin59_NJets8910"); g_bin59_NJets8910->Write();
+
    f->Close();
 }
  
